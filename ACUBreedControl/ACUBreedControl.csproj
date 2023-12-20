@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+	<AssemblyName>ACUBreedControl</AssemblyName>
+	<BepInExPluginGuid>desperationfighter.$(AssemblyName)</BepInExPluginGuid>
+	<BepInExPluginName>$(AssemblyName)</BepInExPluginName>
+    <Version>1.0.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>11</LangVersion>
+	<RootNamespace>ACUBreedControl</RootNamespace>
+
+    <RestoreAdditionalProjectSources>
+      https://api.nuget.org/v3/index.json;
+      https://nuget.bepinex.dev/v3/index.json;
+    </RestoreAdditionalProjectSources>
+
+	  <Authors>Desperationfighter</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="1.1.0" />
+    <PackageReference Include="UnityEngine.Modules" Version="2019.4.36" IncludeAssets="compile" />
+    <PackageReference Include="Subnautica.GameLibs" Version="71288.0.0-r.0" />
+    <PackageReference Include="PolySharp" Version="1.13.1" />
+    <PackageReference Include="Subnautica.Nautilus" Version="1.*-*" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+
+	<ItemDefinitionGroup>
+		<PackageReference ExcludeAssets="runtime" />
+	</ItemDefinitionGroup>
+
+  <ItemGroup>
+    <Folder Include="ACUBreedControl.SNv2.Desperationfighter\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="set AssetFolder=$(ProjectName).SNv2.Desperationfighter&#xD;&#xA;set TargetdirAssetFolder=$(TargetDir)%25AssetFolder%25\&#xD;&#xA;copy /Y &quot;$(TargetPath)&quot; &quot;%25TargetdirAssetFolder%25$(TargetFileName)&quot;&#xD;&#xA;set ZipPath=$(TargetDir)%25AssetFolder%25_$(Version).zip&#xD;&#xA;&quot;C:\Program Files\7-Zip\7z.exe&quot; a %25ZipPath%25 %25TargetdirAssetFolder%25 -aoa&#xD;&#xA;&#xD;&#xA;set Gamedir=C:\Program Files (x86)\Steam\steamapps\common\Subnautica\&#xD;&#xA;set BepInExPlugin=BepInEx\plugins\&#xD;&#xA;set BepInExPlugindir=%25Gamedir%25%25BepInExPlugin%25&#xD;&#xA;set BepInExMyMod=%25BepInExPlugindir%25%25AssetFolder%25\&#xD;&#xA;xcopy &quot;%25TargetdirAssetFolder%25&quot; &quot;%25BepInExMyMod%25&quot; /E /y" />
+  </Target>
+</Project>
