@@ -9,9 +9,9 @@ namespace ACUBreedControl.Patches
     public static class WaterParkCreature_Patch
     {
         [HarmonyPrefix]
-        private static bool Prefix(BreakableResource __instance)
+        private static bool Prefix(WaterParkCreature __instance)
         {
-            
+            manipulatedOriginal(__instance);
             return false;
         }
 
